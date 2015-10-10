@@ -1,0 +1,73 @@
+<!doctype html>
+<html ng-app="ESPiN">
+  <head>
+    <meta charset="utf-8">
+    <title>ESPiN</title>
+    <link href="css/style.css" rel="stylesheet">
+    <style>
+    [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+      display: none !important;
+    }
+    </style>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <header id="header" class="header" role="banner">
+      <div class="header__text">
+        <p>ESPN meets <a href="http://www.pinterest.com/">Pinterest.com</a></p>
+      </div>
+    </header>
+
+    <!-- Setup + Pinterest SDK Snippet -->
+    <script>
+        var header = document.getElementById('header');
+        var angularApp = '<main class="main" role="main"><div ng-view class="flex"></div></main>';
+
+        function pLogin(header, angularApp) {
+          PDK.login({scope : 'read_public, write_public, read_relationships, write_relationships'}, function(session) {
+            if (session && Object.keys(session).length) {
+              var img = document.getElementById('login');
+              var login = document.getElementById('plogin');
+              document.body.removeChild(img);
+              document.body.removeChild(login);
+              header.insertAdjacentHTML('afterend', angularApp);
+            }
+          });
+        }
+
+        window.pAsyncInit = function() {
+          PDK.init({
+            appId: "4792305714320118814",
+            cookie: true
+          });
+
+          var session = PDK.getSession();
+          var imgIndex = Math.floor(Math.random() * 5) + 1;
+          var img = '<img id="login" src="images/' + imgIndex + '.jpg"/>';
+          var login = '<button id="plogin" onclick="pLogin()">Login with Pinterest</button>';
+
+          header.insertAdjacentHTML(
+            'afterend', 
+            !!session ? 
+              angularApp :
+              img + login);
+        };
+
+        (function(d, s, id){
+          var js, pjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "https://assets.pinterest.com/sdk/sdk.js";
+          pjs.parentNode.insertBefore(js, pjs);
+        }(document, 'script', 'pinterest-jssdk'));
+    </script>
+
+    <!-- Vendor libraries -->
+    <script src="lib/jquery-v1.11.1.js"></script>
+    <script src="lib/angular-v1.2.22.js"></script>
+    <script src="lib/angular-route-v1.2.22.js"></script>
+    <script src="lib/angular-sanitize-v1.2.22.js"></script>
+    <!-- Application Files -->
+    <script src="js/app.js"></script>
+  </body>
+</html>
