@@ -1,0 +1,23 @@
+<div class="sports">
+
+  <div class="search-bar">
+    <div class="sports__count">
+      You follow {{ sports.length || 'no' }} sports
+    </div>
+    <div ng-hide="!sports.length">
+      <input type="text" class="sports__search" 
+        ng-model="sports.search" placeholder="Search sports">
+    </div>
+
+  </div>
+  <ul class="sports__list">
+    <li ng-show="!sports.length" class="no-sports">
+      No followed sports! Search and start following.
+    </li>
+    <li ng-repeat="sport in sports">
+      <div class="sports__list-info">
+        {{ sport.name }}
+      </div>
+    </li>
+  </ul>
+</div>
